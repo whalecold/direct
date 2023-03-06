@@ -26,6 +26,9 @@
         (__builtin_constant_p(x) ?              \
          __bpf_constant_ntohl(x) : __bpf_ntohl(x))
 
+#define bpf_htons(x)                            \
+        (__builtin_constant_p(x) ?              \
+         __bpf_constant_htons(x) : __bpf_htons(x))
 #ifndef FORCE_READ
 #define FORCE_READ(X) (*(volatile typeof(X)*)&X)
 #endif

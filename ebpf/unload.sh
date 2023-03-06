@@ -11,3 +11,7 @@ sudo rm /sys/fs/bpf/bpf_sockops
 
 # Delete the map
 sudo rm /sys/fs/bpf/sock_ops_map
+
+# Detach and unload the bpf_connect program
+sudo bpftool cgroup detach /sys/fs/cgroup/unified/ connect4 pinned /sys/fs/bpf/bpf_connect
+sudo rm /sys/fs/bpf/bpf_connect

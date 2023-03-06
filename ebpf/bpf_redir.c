@@ -3,7 +3,7 @@
 #include "bpf_socketops.h"
 
 
-
+// sk_msg_md https://github.com/torvalds/linux/blob/fe15c26ee26efa11741a7b632e9f23b01aca4cc6/include/uapi/linux/bpf.h#L6186
 /*
  * extract the key that identifies the destination socket in the sock_ops_map
  */

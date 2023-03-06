@@ -26,3 +26,9 @@ clang -O2 -g -Wall -target bpf -c bpf_redir.c -o bpf_redir.o
 
 sudo bpftool prog load bpf_redir.o /sys/fs/bpf/bpf_redir map name sock_ops_map pinned /sys/fs/bpf/sock_ops_map
 sudo bpftool prog attach pinned /sys/fs/bpf/bpf_redir msg_verdict pinned /sys/fs/bpf/sock_ops_map
+
+# Compile the bpf_connect program
+clang -O2 -g -target bpf -c bpf_connect.c -o bpf_connect.o
+
+sudo bpftool prog load bpf_connect.o /sys/fs/bpf/bpf_connect
+sudo bpftool cgroup attach /sys/fs/bpf/bpf_connect connect4 pinned /sys/fs/bpf/bpf_connect

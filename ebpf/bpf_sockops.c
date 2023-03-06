@@ -2,6 +2,8 @@
 
 #include "bpf_socketops.h"
 
+// helper https://man7.org/linux/man-pages/man7/bpf-helpers.7.html
+
 static inline
 void extract_key4_from_ops(struct bpf_sock_ops *ops, struct sock_key *key)
 {
@@ -15,6 +17,7 @@ void extract_key4_from_ops(struct bpf_sock_ops *ops, struct sock_key *key)
     key->dport = FORCE_READ(ops->remote_port) >> 16;
 }
 
+// bpf_sock_ops: https://github.com/torvalds/linux/blob/fe15c26ee26efa11741a7b632e9f23b01aca4cc6/include/uapi/linux/bpf.h#L6398
 static inline
 void bpf_sock_ops_ipv4(struct bpf_sock_ops * skops)
 {
@@ -35,8 +38,8 @@ __section("sockops") // 加载到 ELF 中的 `sockops` 区域，有 socket opera
 int bpf_sockmap(struct bpf_sock_ops *skops)
 {
 	switch (skops->op) {
-		case BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB: // 被动建连
-		case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:  // 主动建连
+		// case BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB: // 被动建连 inbound
+		case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:  // 主动建连 outbound
 			if (skops->family == 2 && bpf_ntohl(skops->remote_port) == 18080) { // AF_INET 并且端口是 8080
 				bpf_sock_ops_ipv4(skops);         // 将 socket 信息记录到到 sockmap
 			}
