@@ -1,12 +1,13 @@
 #include <linux/bpf.h>
+#include <linux/in.h>
 
 #include "bpf_socketops.h"
 
 func int tcp_connect4(struct bpf_sock_addr *ctx) 
 {
-	if bpf_ntohl(ctx->user_port) == 18080 {
+	if (bpf_ntohl(ctx->user_port) == 18080) {
     	ctx->user_port = bpf_htons(8080);
-	    printk("tcp_connect4: reconnect the src port from %d to %d", 18080, 8080)
+	    printk("tcp_connect4: reconnect the src port from %d to %d", 18080, 8080);
 	}
 }
 

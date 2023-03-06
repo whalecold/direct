@@ -8,13 +8,17 @@
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 # define __bpf_ntohl(x)                 __builtin_bswap32(x)
 # define __bpf_htonl(x)                 __builtin_bswap32(x)
+# define __bpf_htons(x)                 __builtin_bswap16(x)
 # define __bpf_constant_ntohl(x)        ___constant_swab32(x)
 # define __bpf_constant_htonl(x)        ___constant_swab32(x)
+# define __bpf_constant_htons(x)        ___constant_swab16(x)
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 # define __bpf_ntohl(x)                 (x)
 # define __bpf_htonl(x)                 (x)
+# define __bpf_htons(x)                 (x)
 # define __bpf_constant_ntohl(x)        (x)
 # define __bpf_constant_htonl(x)        (x)
+# define __bpf_constant_htons(x)        (x)
 #else
 # error "Check the compiler's endian detection."
 #endif
@@ -25,10 +29,10 @@
 #define bpf_ntohl(x)                            \
         (__builtin_constant_p(x) ?              \
          __bpf_constant_ntohl(x) : __bpf_ntohl(x))
-
 #define bpf_htons(x)                            \
         (__builtin_constant_p(x) ?              \
          __bpf_constant_htons(x) : __bpf_htons(x))
+
 #ifndef FORCE_READ
 #define FORCE_READ(X) (*(volatile typeof(X)*)&X)
 #endif
