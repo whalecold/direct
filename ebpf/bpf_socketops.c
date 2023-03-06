@@ -1,6 +1,6 @@
 #include <linux/bpf.h>
 
-#include "bpf_sockops.h"
+#include "bpf_socketops.h"
 
 static inline
 void extract_key4_from_ops(struct bpf_sock_ops *ops, struct sock_key *key)
@@ -28,7 +28,7 @@ void bpf_sock_ops_ipv4(struct bpf_sock_ops * skops)
 		printk("socket hash update() failed, ret %d\n", ret);
 	}
 	printk("sockmap: op %d, port %d  -->  %d\n", 
-			socket->op, skops->local_port, bpf_ntohl(skops->remote_port));
+			skops->op, skops->local_port, bpf_ntohl(skops->remote_port));
 }
 
 __section("sockops") // 加载到 ELF 中的 `sockops` 区域，有 socket operations 时触发执行

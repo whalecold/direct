@@ -1,6 +1,6 @@
 #include <linux/bpf.h>
 
-#include "bpf_sockops.h"
+#include "bpf_socketops.h"
 
 
 
