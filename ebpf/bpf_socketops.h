@@ -60,6 +60,10 @@ static int BPF_FUNC(sock_hash_update, struct bpf_sock_ops *skops,
 			void *map, void *key, __u64 flags);
 static void BPF_FUNC(trace_printk, const char *fmt, int fmt_size, ...);
 
+// 127.0.0.1 (network order)
+static const __u32 localhost = 127 + (1 << 24);
+
+
 /*
  * Map definition
  * Why should we reuse the map definition bpf_elf_map

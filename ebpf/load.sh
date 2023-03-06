@@ -31,4 +31,4 @@ sudo bpftool prog attach pinned /sys/fs/bpf/bpf_redir msg_verdict pinned /sys/fs
 clang -O2 -g -target bpf -c bpf_connect.c -o bpf_connect.o
 
 sudo bpftool prog load bpf_connect.o /sys/fs/bpf/bpf_connect
-sudo bpftool cgroup attach /sys/fs/bpf/bpf_connect connect4 pinned /sys/fs/bpf/bpf_connect
+sudo bpftool cgroup attach /sys/fs/cgroup/unified/ connect4 pinned /sys/fs/bpf/bpf_connect

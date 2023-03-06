@@ -5,9 +5,11 @@
 
 int tcp_connect4(struct bpf_sock_addr *ctx) 
 {
-	if (bpf_ntohl(ctx->user_port) == 18080) {
+	// rewrite the port from x.x.x.x:18080 to 127.0.0.1:8080
+	if (bpf_ntohl(ctx->user_port) >> 16 == 18080) {
     	ctx->user_port = bpf_htons(8080);
-	    printk("tcp_connect4: reconnect the src port from %d to %d", 18080, 8080);
+        ctx->user_ip4 = localhost;
+	    printk("tcp_connect4: reconnect the src port from %d to %d\n", 18080, 8080);
 	}
 	return SK_PASS;
 }
@@ -24,3 +26,5 @@ int bpf_sock_connect4(struct bpf_sock_addr *ctx)
     }
 }
 
+char ____license[] __section("license") = "GPL";
+int _version __section("version") = 1;
