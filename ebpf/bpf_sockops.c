@@ -38,7 +38,11 @@ __section("sockops") // 加载到 ELF 中的 `sockops` 区域，有 socket opera
 int bpf_sockmap(struct bpf_sock_ops *skops)
 {
 	switch (skops->op) {
-		// case BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB: // 被动建连 inbound
+		case BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB: // 被动建连 inbound 本地端口是 8080
+			if (skops->family == 2 && skops->local_port) == 8080 { // AF_INET 并且端口是 8080
+				bpf_sock_ops_ipv4(skops);         // 将 socket 信息记录到到 sockmap
+			}
+			break;
 		case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:  // 主动建连 outbound
 			if (skops->family == 2 && bpf_ntohl(skops->remote_port) == 8080) { // AF_INET 并且端口是 8080
 				bpf_sock_ops_ipv4(skops);         // 将 socket 信息记录到到 sockmap
